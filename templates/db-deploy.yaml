@@ -1,8 +1,8 @@
-{ { - if ne .Capabilities.KubeVersion.Minor "13" } }
+{{ - if ne .Capabilities.KubeVersion.Minor "13" }}
 apiVersion: apps/v1
-  { { - else } }
+  {{ - else }}
 apiVersion: extensions/v1beta1
-  { { - end } }
+  {{ - end }}
 kind: Deployment
 metadata:
   name: puppets-service-db
@@ -22,9 +22,9 @@ spec:
           image: postgres:9.6.2
           env:
             - name: POSTGRES_USER
-              value: { { .Values.api.db.user } }
+              value: {{ .Values.api.db.user }}
             - name: POSTGRES_PASSWORD
-              value: { { .Values.api.db.password } }
+              value: {{ .Values.api.db.password }}
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
           ports:

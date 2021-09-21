@@ -8,13 +8,13 @@ metadata:
 spec:
   tls:
     - hosts:
-      { { - range $i, $dns := .Values.api.dns } }
+      {{ - range $i, $dns := .Values.api.dns }}
       - "{{ $dns }}"
-      { { - end } }
+      {{ - end }}
       secretName: puppets-tls
   rules:
-  { { - range $i, $dns := .Values.api.dns } }
-  - host: { { $dns } }
+  {{ - range $i, $dns := .Values.api.dns }}
+  - host: {{ $dns }}
     http:
       paths:
         - path: /swagger
@@ -37,4 +37,4 @@ spec:
           backend:
             serviceName: puppets-service
             servicePort: 8080
-    { { - end } }
+    {{ - end }}

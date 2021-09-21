@@ -1,4 +1,4 @@
-{ { - if ne .Capabilities.KubeVersion.Minor "13" } }
+{{ - if ne .Capabilities.KubeVersion.Minor "13" }}
 apiVersion: apps/v1
   {{- else }}
 apiVersion: extensions/v1beta1
@@ -27,39 +27,39 @@ spec:
             failureThreshold: 3
           env:
             - name: BASE_URL
-              value: { { .Values.api.baseUrl } }
+              value: {{ .Values.api.baseUrl }}
             - name: CLIENT_KEY
-              value: { { .Values.clientKey } }
+              value: {{ .Values.clientKey }}
             - name: INTERNAL_KEY
-              value: { { .Values.api.internalKey } }
+              value: {{ .Values.api.internalKey }}
             - name: PG_HOST
               value: puppets-service-db
             - name: PG_USER
-              value: { { .Values.api.db.user } }
+              value: {{ .Values.api.db.user }}
             - name: PG_PASSWORD
-              value: { { .Values.api.db.password } }
-  { { - if not .Values.processing } }
+              value: {{ .Values.api.db.password }}
+  {{ - if not .Values.processing }}
 - name: NO_PROCESSING
   value: "true"
-  { { - end } }
-  { { - if not .Values.purchases } }
+  {{ - end }}
+  {{ - if not .Values.purchases }}
 - name: NO_PURCHASES
   value: "true"
-  { { - end } }
+  {{ - end }}
 ports:
   - containerPort: 8088
     name: http
 volumeMounts:
   - name: data
     mountPath: /data
-  { { - if .Values.processing } }
+  {{ - if .Values.processing }}
 - name: executing
   mountPath: /executing
   subPath: puppets-executing
 - name: completed
   mountPath: /completed
   subPath: puppets-completed
-  { { - end } }
+  {{ - end }}
 - name: puppets-search
   image: "{{ printf "%s:%s" .Values.search.Image.Name .Values.search.Image.Tag}}"
   readinessProbe:
@@ -73,11 +73,11 @@ volumeMounts:
     failureThreshold: 3
   env:
     - name: CLIENT_KEY
-      value: { { .Values.clientKey } }
+      value: {{ .Values.clientKey }}
     - name: API_KEY
-      value: { { .Values.search.google.api_key } }
+      value: {{ .Values.search.google.api_key }}
     - name: PROJECT_CX
-      value: { { .Values.search.google.project_cx } }
+      value: {{ .Values.search.google.project_cx }}
   ports:
     - containerPort: 8088
       name: http
@@ -88,23 +88,23 @@ volumes:
   - name: data
     persistentVolumeClaim:
       claimName: puppets-service-data
-  { { - if .Values.processing } }
+  {{ - if .Values.processing }}
 - name: executing
-  { { - if .Values.persistence.upload.customNFS } }
+  {{ - if .Values.persistence.upload.customNFS }}
 nfs:
-  server: { { .Values.persistence.upload.customNFS.server } }
-  path: { { .Values.persistence.upload.customNFS.path } }
-  { { - else } }
+  server: {{ .Values.persistence.upload.customNFS.server }}
+  path: {{ .Values.persistence.upload.customNFS.path }}
+  {{ - else }}
 persistentVolumeClaim:
   claimName: puppets-executing
-  { { - end } }
+  {{ - end }}
 - name: completed
-  { { - if .Values.persistence.completed.customNFS } }
+  {{ - if .Values.persistence.completed.customNFS }}
 nfs:
-  server: { { .Values.persistence.completed.customNFS.server } }
-  path: { { .Values.persistence.completed.customNFS.path } }
-  { { - else } }
+  server: {{ .Values.persistence.completed.customNFS.server }}
+  path: {{ .Values.persistence.completed.customNFS.path }}
+  {{ - else }}
 persistentVolumeClaim:
   claimName: puppets-completed
-  { { - end } }
-  { { - end } }
+  {{ - end }}
+  {{ - end }}
