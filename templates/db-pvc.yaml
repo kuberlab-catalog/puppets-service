@@ -3,9 +3,9 @@ apiVersion: v1
 metadata:
   name: puppets-service-db
 spec:
-  {{ - if .Values.persistence.db.storageClass }}
+  {{- if .Values.persistence.db.storageClass }}
   storageClassName: {{ .Values.persistence.db.storageClass | quote }}
-  {{ - end }}
+  {{- end }}
   accessModes:
     - "ReadWriteOnce"
   resources:

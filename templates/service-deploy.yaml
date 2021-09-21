@@ -1,8 +1,8 @@
-{{ - if ne .Capabilities.KubeVersion.Minor "13" }}
+{{- if ne .Capabilities.KubeVersion.Minor "13" }}
 apiVersion: apps/v1
-  {{- else }}
+{{- else }}
 apiVersion: extensions/v1beta1
-  {{- end }}
+{{- end }}
 kind: Deployment
 metadata:
   name: puppets-service
@@ -38,73 +38,73 @@ spec:
               value: {{ .Values.api.db.user }}
             - name: PG_PASSWORD
               value: {{ .Values.api.db.password }}
-  {{ - if not .Values.processing }}
-- name: NO_PROCESSING
-  value: "true"
-  {{ - end }}
-  {{ - if not .Values.purchases }}
-- name: NO_PURCHASES
-  value: "true"
-  {{ - end }}
-ports:
-  - containerPort: 8088
-    name: http
-volumeMounts:
-  - name: data
-    mountPath: /data
-  {{ - if .Values.processing }}
-- name: executing
-  mountPath: /executing
-  subPath: puppets-executing
-- name: completed
-  mountPath: /completed
-  subPath: puppets-completed
-  {{ - end }}
-- name: puppets-search
-  image: "{{ printf "%s:%s" .Values.search.Image.Name .Values.search.Image.Tag}}"
-  readinessProbe:
-    httpGet:
-      path: /
-      port: 8080
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 3
-    successThreshold: 1
-    failureThreshold: 3
-  env:
-    - name: CLIENT_KEY
-      value: {{ .Values.clientKey }}
-    - name: API_KEY
-      value: {{ .Values.search.google.api_key }}
-    - name: PROJECT_CX
-      value: {{ .Values.search.google.project_cx }}
-  ports:
-    - containerPort: 8088
-      name: http
-  volumeMounts:
-    - name: data
-      mountPath: /data
-volumes:
-  - name: data
-    persistentVolumeClaim:
-      claimName: puppets-service-data
-  {{ - if .Values.processing }}
-- name: executing
-  {{ - if .Values.persistence.upload.customNFS }}
-nfs:
-  server: {{ .Values.persistence.upload.customNFS.server }}
-  path: {{ .Values.persistence.upload.customNFS.path }}
-  {{ - else }}
-persistentVolumeClaim:
-  claimName: puppets-executing
-  {{ - end }}
-- name: completed
-  {{ - if .Values.persistence.completed.customNFS }}
-nfs:
-  server: {{ .Values.persistence.completed.customNFS.server }}
-  path: {{ .Values.persistence.completed.customNFS.path }}
-  {{ - else }}
-persistentVolumeClaim:
-  claimName: puppets-completed
-  {{ - end }}
-  {{ - end }}
+            {{- if not .Values.processing }}
+            - name: NO_PROCESSING
+              value: "true"
+            {{- end }}
+            {{- if not .Values.purchases }}
+            - name: NO_PURCHASES
+              value: "true"
+            {{- end }}
+          ports:
+            - containerPort: 8088
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            {{- if .Values.processing }}
+            - name: executing
+              mountPath: /executing
+              subPath: puppets-executing
+            - name: completed
+              mountPath: /completed
+              subPath: puppets-completed
+            {{- end }}
+        - name: puppets-search
+          image: "{{ printf "%s:%s" .Values.search.Image.Name .Values.search.Image.Tag}}"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          env:
+            - name: CLIENT_KEY
+              value: {{ .Values.clientKey }}
+            - name: API_KEY
+              value: {{ .Values.search.google.api_key }}
+            - name: PROJECT_CX
+              value: {{ .Values.search.google.project_cx }}
+          ports:
+            - containerPort: 8088
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: puppets-service-data
+        {{- if .Values.processing }}
+        - name: executing
+          {{- if .Values.persistence.upload.customNFS }}
+          nfs:
+            server: {{ .Values.persistence.upload.customNFS.server }}
+            path: {{ .Values.persistence.upload.customNFS.path }}
+          {{- else }}
+            persistentVolumeClaim:
+              claimName: puppets-executing
+          {{- end }}
+        - name: completed
+          {{- if .Values.persistence.completed.customNFS }}
+          nfs:
+            server: {{ .Values.persistence.completed.customNFS.server }}
+            path: {{ .Values.persistence.completed.customNFS.path }}
+          {{- else }}
+          persistentVolumeClaim:
+            claimName: puppets-completed
+          {{- end }}
+        {{- end }}

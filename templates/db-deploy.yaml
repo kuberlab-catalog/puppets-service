@@ -1,8 +1,8 @@
-{{ - if ne .Capabilities.KubeVersion.Minor "13" }}
+{{- if ne .Capabilities.KubeVersion.Minor "13" }}
 apiVersion: apps/v1
-  {{ - else }}
+{{- else }}
 apiVersion: extensions/v1beta1
-  {{ - end }}
+{{- end }}
 kind: Deployment
 metadata:
   name: puppets-service-db

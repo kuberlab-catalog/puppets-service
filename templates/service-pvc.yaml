@@ -1,15 +1,15 @@
-{{ - if not .Values.persistence.data.customNFS }}
+{{- if not .Values.persistence.data.customNFS }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: puppets-service-data
 spec:
-  {{ - if .Values.persistence.data.storageClass }}
+  {{- if .Values.persistence.data.storageClass }}
   storageClassName: {{ .Values.persistence.data.storageClass | quote }}
-  {{ - end }}
+  {{- end }}
   accessModes:
     - "ReadWriteOnce"
   resources:
     requests:
       storage: {{ .Values.persistence.data.size }}
-  {{ - end }}
+  {{- end }}
