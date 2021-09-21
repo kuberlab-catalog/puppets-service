@@ -1,0 +1,11 @@
+Description: Kibernetika Puppets Service
+Engine: gotpl
+Home: https://kibernetika.ai
+Keywords:
+  - Artificial Intelligence
+  - Kibernetika
+Maintainers:
+  - Email: vgrishin@kibernetika.ai
+    Name: Vadim Grishin
+Name: puppets-service
+Version: 1.0.0

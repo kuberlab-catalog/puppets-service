@@ -1,0 +1,35 @@
+processing: false
+purchases: false
+clientKey: ""
+
+api:
+  Image:
+    Name: kuberlab/salut-api
+    Tag: latest
+  db:
+    user: postgres
+    password: postgres
+  dns:
+    - puppets.kibernetika.ai
+  baseUrl: https://puppets.kibernetika.ai
+  internalKey: ""
+
+search:
+  Image:
+    Name: kuberlab/salut-search
+    Tag: latest
+  google:
+    api_key: ""
+    project_cx: ""
+
+persistence:
+  data:
+    storageClass: standard
+    size: 5G
+  db:
+    storageClass: standard
+    size: 5G
+
+#    customNFS:
+#      server: 10.0.0.1
+#      path: /kuberlab

@@ -1,0 +1,40 @@
+{ { - if ne .Capabilities.KubeVersion.Minor "13" } }
+apiVersion: apps/v1
+  { { - else } }
+apiVersion: extensions/v1beta1
+  { { - end } }
+kind: Deployment
+metadata:
+  name: puppets-service-db
+spec:
+  selector:
+    matchLabels:
+      app: puppets
+      component: puppets-service-db
+  template:
+    metadata:
+      labels:
+        app: puppets
+        component: puppets-service-db
+    spec:
+      containers:
+        - name: puppets-service-db
+          image: postgres:9.6.2
+          env:
+            - name: POSTGRES_USER
+              value: { { .Values.api.db.user } }
+            - name: POSTGRES_PASSWORD
+              value: { { .Values.api.db.password } }
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+              name: psql
+          volumeMounts:
+            - name: db
+              mountPath: /var/lib/postgresql/data/pgdata
+              subPath: puppets-db
+      volumes:
+        - name: db
+          persistentVolumeClaim:
+            claimName: puppets-service-db
