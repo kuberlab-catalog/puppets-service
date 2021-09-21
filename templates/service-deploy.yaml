@@ -38,6 +38,14 @@ spec:
               value: {{ .Values.api.db.user }}
             - name: PG_PASSWORD
               value: {{ .Values.api.db.password }}
+            - name: IMAGES_DIR
+              value: /data/images
+            - name: GALLERY_DIR
+              value: /data/gallery
+            - name: QUERY_LOG_DIR
+              value: /data/query_log
+            - name: QUERY_POPULAR_DIR
+              value: /data/query_popular
             {{- if not .Values.processing }}
             - name: NO_PROCESSING
               value: "true"
@@ -78,6 +86,12 @@ spec:
               value: {{ .Values.search.google.api_key }}
             - name: PROJECT_CX
               value: {{ .Values.search.google.project_cx }}
+            - name: DATA_DIR
+              value: /data/search_data
+            - name: QUERY_LOG_DIR
+              value: /data/query_log
+            - name: QUERY_POPULAR_DIR
+              value: /data/query_popular
           ports:
             - containerPort: 8088
               name: http
