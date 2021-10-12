@@ -18,30 +18,35 @@ spec:
     http:
       paths:
         - path: /swagger
+          pathType: Prefix
           backend:
             service:
               name: puppets-service
               port:
                 number: 8088
         - path: /api
+          pathType: Prefix
           backend:
             service:
               name: puppets-service
               port:
                 number: 8088
         - path: /upload
+          pathType: Prefix
           backend:
             service:
               name: puppets-service
               port:
                 number: 8088
         - path: /search
+          pathType: Prefix
           backend:
             service:
               name: puppets-service
               port:
                 number: 8080
         - path: /
+          pathType: Prefix
           backend:
             service:
               name: puppets-service

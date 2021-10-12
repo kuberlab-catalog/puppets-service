@@ -7,6 +7,10 @@ kind: Deployment
 metadata:
   name: puppets-service
 spec:
+  selector:
+    matchLabels:
+      app: puppets
+      component: puppets-service
   template:
     metadata:
       labels:
