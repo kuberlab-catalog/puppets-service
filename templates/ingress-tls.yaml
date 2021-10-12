@@ -4,7 +4,7 @@ metadata:
   name: puppets-tls
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    certmanager.k8s.io/cluster-issuer: kibernetika-cert-issuer
+    cert-manager.io/cluster-issuer: kibernetika-cert-issuer
 spec:
   tls:
     - hosts:
