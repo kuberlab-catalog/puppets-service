@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: puppets-tls
@@ -19,22 +19,32 @@ spec:
       paths:
         - path: /swagger
           backend:
-            serviceName: puppets-service
-            servicePort: 8088
+            service:
+              name: puppets-service
+              port:
+                number: 8088
         - path: /api
           backend:
-            serviceName: puppets-service
-            servicePort: 8088
+            service:
+              name: puppets-service
+              port:
+                number: 8088
         - path: /upload
           backend:
-            serviceName: puppets-service
-            servicePort: 8088
+            service:
+              name: puppets-service
+              port:
+                number: 8088
         - path: /search
           backend:
-            serviceName: puppets-service
-            servicePort: 8080
+            service:
+              name: puppets-service
+              port:
+                number: 8080
         - path: /
           backend:
-            serviceName: puppets-service
-            servicePort: 8080
+            service:
+              name: puppets-service
+              port:
+                number: 8080
   {{- end }}
